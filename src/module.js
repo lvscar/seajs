@@ -228,7 +228,7 @@
         }
       }
 
-      var module = save(resolvedUri, meta)
+      var module = Module._save(resolvedUri, meta)
 
       // For IE:
       // Assigns the first module in package to cachedModules[derivedUrl]
@@ -291,7 +291,7 @@
   Module.STATUS = STATUS
   Module._resolve = util.id2Uri
   Module._fetch = util.fetch
-  Module.cache = cachedModules
+  Module._save = save
 
 
   // Helpers
@@ -347,7 +347,7 @@
 
           // Saves anonymous module meta data
           if (anonymousModuleMeta) {
-            save(uri, anonymousModuleMeta)
+            Module._save(uri, anonymousModuleMeta)
             anonymousModuleMeta = null
           }
 
@@ -365,11 +365,12 @@
           }
 
           // Calls callbackList
-          if (callbackList[requestUri]) {
-            util.forEach(callbackList[requestUri], function(fn) {
+          var fns = callbackList[requestUri]
+          if (fns) {
+            delete callbackList[requestUri]
+            util.forEach(fns, function(fn) {
               fn()
             })
-            delete callbackList[requestUri]
           }
 
         },
@@ -498,12 +499,13 @@
 
   // For normal users
   seajs.define = Module._define
-  seajs.cache = Module.cache
+  seajs.cache = Module.cache = cachedModules
   seajs.find = Module._find
   seajs.modify = Module._modify
 
 
   // For plugin developers
+  Module.fetchedList = fetchedList
   seajs.pluginSDK = {
     Module: Module,
     util: util,

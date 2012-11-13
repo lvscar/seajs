@@ -1,6 +1,6 @@
 /**
  * @preserve SeaJS - A Module Loader for the Web
- * v1.3.0-dev | seajs.org | MIT Licensed
+ * v1.3.0 | seajs.org | MIT Licensed
  */
 
 
@@ -14,7 +14,7 @@ this.seajs = { _seajs: this.seajs }
  * The version of the framework. It will be replaced with "major.minor.patch"
  * when building.
  */
-seajs.version = '1.3.0-dev'
+seajs.version = '1.3.0'
 
 
 /**
@@ -951,7 +951,7 @@ seajs._config = {
         }
       }
 
-      var module = save(resolvedUri, meta)
+      var module = Module._save(resolvedUri, meta)
 
       // For IE:
       // Assigns the first module in package to cachedModules[derivedUrl]
@@ -1014,7 +1014,7 @@ seajs._config = {
   Module.STATUS = STATUS
   Module._resolve = util.id2Uri
   Module._fetch = util.fetch
-  Module.cache = cachedModules
+  Module._save = save
 
 
   // Helpers
@@ -1070,7 +1070,7 @@ seajs._config = {
 
           // Saves anonymous module meta data
           if (anonymousModuleMeta) {
-            save(uri, anonymousModuleMeta)
+            Module._save(uri, anonymousModuleMeta)
             anonymousModuleMeta = null
           }
 
@@ -1088,11 +1088,12 @@ seajs._config = {
           }
 
           // Calls callbackList
-          if (callbackList[requestUri]) {
-            util.forEach(callbackList[requestUri], function(fn) {
+          var fns = callbackList[requestUri]
+          if (fns) {
+            delete callbackList[requestUri]
+            util.forEach(fns, function(fn) {
               fn()
             })
-            delete callbackList[requestUri]
           }
 
         },
@@ -1221,12 +1222,13 @@ seajs._config = {
 
   // For normal users
   seajs.define = Module._define
-  seajs.cache = Module.cache
+  seajs.cache = Module.cache = cachedModules
   seajs.find = Module._find
   seajs.modify = Module._modify
 
 
   // For plugin developers
+  Module.fetchedList = fetchedList
   seajs.pluginSDK = {
     Module: Module,
     util: util,
@@ -1261,7 +1263,7 @@ seajs._config = {
 
   // When src is "http://test.com/libs/seajs/1.0.0/sea.js", redirect base
   // to "http://test.com/libs/"
-  var match = base.match(/^(.+\/)seajs\/[\d\.]+\/$/)
+  var match = base.match(/^(.+\/)seajs\/[\.\d]+(?:-dev)?\/$/)
   if (match) base = match[1]
 
   config.base = base
@@ -1449,6 +1451,7 @@ seajs._config = {
   }
 
 })(seajs, seajs._util, this)
+
 /**
  * The bootstrap and entrances
  */

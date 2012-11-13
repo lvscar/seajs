@@ -7,7 +7,7 @@
   <property name="tmp.dir" location="${dist.dir}/tmp/"/>
 
   <property name="module.name" value="sea"/>
-  <property name="version" value="1.3.0-dev"/>
+  <property name="version" value="1.3.0"/>
 
   <property name="tools.dir" location="${root.dir}/tools/"/>
   <property name="gcc.jar" location="${tools.dir}/compiler.jar"/>
@@ -15,7 +15,7 @@
 
   <property name="src.file" value="${tmp.dir}/${module.name}-src.js"/>
   <property name="debug.file" value="${dist.dir}/${module.name}-debug.js"/>
-  <property name="compress.plugins" value="plugin-base.js,plugin-combo.js,plugin-i18n.js"/>
+  <property name="compress.plugins" value="plugin-base.js,plugin-combo.js,plugin-i18n.js,plugin-warning.js"/>
 
 
   <!-- 合并 -->

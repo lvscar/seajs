@@ -12,7 +12,9 @@
 <script src="../../../dist/sea.js"></script>
 <script>
 
-  seajs.use('./main')
+  seajs.config({
+    preload: 'seajs/plugin-warning'
+  }).use('./main')
 
 
   function printResults(txt, style) {

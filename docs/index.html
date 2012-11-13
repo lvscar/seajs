@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>SeaJS - A Module Loader for the Web</title>
-<link rel="stylesheet" href="assets/home.css?v20121016.css">
+<link rel="stylesheet" href="assets/home.css?v20121112.css">
 </head>
 <body>
 
@@ -19,7 +19,7 @@
     <li><a href="#intro">介绍</a></li>
     <li><a href="#docs">使用文档</a></li>
     <li><a href="#articles">社区精选</a></li>
-    <li><a href="https://github.com/seajs/spm/wiki">包管理工具</a></li>
+    <li><a href="https://github.com/seajs/spm/wiki" target="_blank">包管理工具</a></li>
     <li><a href="#about">关于</a></li>
   </ul>
 
@@ -54,8 +54,8 @@
       </p>
 
       <ul>
-        <li><strong>简单易用</strong>：提供与 <a href="http://nodejs.org/">NodeJS</a> 一般的模块化开发体验。</li>
-        <li><strong>体系化</strong>：通过包管理工具 <a href="https://github.com/seajs/spm/wiki">SPM</a> 提供预编译、打包部署等功能。</li>
+        <li><strong>简单易用</strong>：提供与 <a href="http://nodejs.org/" target="_blank">Node.js</a> 一般的模块化开发体验。</li>
+        <li><strong>体系化</strong>：通过包管理工具 <a href="https://github.com/seajs/spm/wiki" target="_blank">spm</a> 提供预编译、打包部署等功能。</li>
       </ul>
 
       <p>
@@ -116,7 +116,7 @@ Opera 10+         ✔
 </pre>
 
       <p>
-        SeaJS 还可运行在 Mobile 端，包括 Hybrid 模式的 App 上。理论上，SeaJS 可以在任何浏览器引擎上运行。
+        SeaJS 还可运行在 Mobile 端，包括 Hybrid 模式的 App 上。理论上，SeaJS 可以运行在任何浏览器引擎上。
       </p>
 
     </div>
@@ -140,7 +140,7 @@ Opera 10+         ✔
     <iframe id="quick-start-iframe" src="javascript:;" scrolling="no" frameborder="0" width="800" height="150"></iframe>
 
     <p>
-      下面花 5 分钟时间，来看看如何来实现这个小游戏。
+      下面花 5 分钟，来看看如何来实现这个小游戏。
     </p>
 
 
@@ -153,38 +153,44 @@ Opera 10+         ✔
 <pre class="text">
 hello-seajs/
   |-- assets
-  |     |-- images
-  |     |-- sea-modules
-  |     |-- src
-  |     |-- package.json
-  |-- index.html
+  |     |-- main
+  |     `-- sea-modules
+  `-- index.html
 </pre>
 
-    <p>所有 css、js、img 等静态资源文件，都存放在 <code>assets</code> 目录下。其中 <code>sea-modules</code>
+    <p><code>assets</code> 目录存放 css、js 等静态资源文件，其中 <code>sea-modules</code>
       下存放的是我们需要用到的第三方模块，可通过 <code>spm install</code> 来获取：</p>
 
 <pre class="text">
-$ cd hello-seajs/assets/sea-modules
+$ cd hello-seajs/assets
 $ spm install seajs
-$ spm install jquery
+$ spm install gallery.jquery
 </pre>
 
     <p><strong>注意</strong>：</p>
     <ol>
       <li>安装的 <code>jquery.js</code> 是经过封装的模块文件，不能用 jQuery 官网提供的原始文件。</li>
-      <li><a href="https://github.com/seajs/spm/wiki">spm</a> 是包管理工具，我们先了解有这么一个工具就好，不用着急。</li>
+      <li><a href="https://github.com/seajs/spm/wiki" target="_blank">spm</a> 是包管理工具，我们先了解有这么一个工具就好，不用着急。</li>
     </ol>
 
-    <p>最重要的一个目录是 src，用来存放源码：</p>
+    <p>最重要的一个目录是 <code>main</code>，用来存放模块源码：</p>
 
 <pre class="text">
-src/
-  |-- hello.css
-  |-- hello.js
-  |-- spinning.js
+main/
+  |-- docs
+  |-- examples
+  |-- src
+  |    |-- main.css
+  |    |-- main.js
+  |    `-- spinning.js
+  |-- tests
+  |-- package.json
+  `-- README.md
 </pre>
 
-    <p><code>package.json</code> 是元信息的描述文件，spm 在打包时会从该文件中获取信息。</p>
+    <p>这是一个模块的标准目录结构，<code>docs</code> 目录用来存放文档，<code>examples</code> 存放示例，<code>src</code> 存放源码，<code>tests</code> 存放测试用例。</p>
+
+    <p><code>package.json</code> 是模块信息文件，指明模块名、版本等基本信息，还包括 spm 的打包配置等信息。</p>
 
 
     <h3>在页面中加载模块</h3>
@@ -197,17 +203,17 @@ src/
 &lt;script&gt;
   seajs.config({
     alias: {
-      'jquery': '1.7.2' // 指定使用的 jQuery 版本
+      'jquery': 'gallery/jquery/1.8.2/jquery' // 指定使用的 jQuery 版本
     }
   })
 
   // 加载入口模块
-  seajs.use('./assets/src/hello.js')
+  seajs.use('./assets/main/src/main')
 &lt;/script&gt;
 </pre>
 
     <p>
-      上面是最简单的一种写法，更多加载方式请参考：<a href="https://github.com/seajs/seajs/issues/260">在页面中加载模块</a>
+      上面是最简单的一种写法，更多加载方式请参考：<a href="https://github.com/seajs/seajs/issues/260" target="_blank">模块加载器</a>
     </p>
 
 
@@ -235,7 +241,7 @@ define(function(require, exports, module) {
 </pre>
 
     <p>
-      <code>hello.js</code> 很简单：
+      <code>main.js</code> 很简单：
     </p>
 
 <pre>
@@ -252,7 +258,7 @@ define(function(require) {
 </pre>
 
     <p>
-      通过 <code>require</code> 引入依赖，通过 <code>exports</code> 提供接口，一切就这么简单。更多用法请参考：<a href="https://github.com/seajs/seajs/issues/242">CMD 模块定义规范</a>
+      通过 <code>require</code> 引入依赖，通过 <code>exports</code> 提供接口，一切就这么简单。更多用法请参考：<a href="https://github.com/seajs/seajs/issues/242" target="_blank">CMD 模块定义规范</a>
     </p>
 
 
@@ -260,15 +266,15 @@ define(function(require) {
 
     <p>
       对于正式项目，在发布上线前，还需要对源码进行压缩、合并等操作。在 SeaJS 里，通过包管理工具
-      <a href="https://github.com/seajs/spm/wiki">spm</a> 来实现。
+      <a href="https://github.com/seajs/spm/wiki" target="_blank">spm</a> 来实现。
     </p>
 
     <p>
-      <a href="https://github.com/seajs/spm/wiki/安装">安装好 spm</a> 后，执行以下命名：
+      <a href="https://github.com/seajs/spm/wiki/安装" target="_blank">安装好 spm</a> 后，执行以下命名：
     </p>
 
 <pre class="text">
-$ cd hello-seajs/assets
+$ cd hello-seajs/assets/main
 $ spm build 
 ...
 BUILD SUCCESS!
@@ -282,35 +288,36 @@ $
 <pre class="text">
 sea-modules/
   |-- hello-seajs
-        |-- 1.0.0
-              |-- hello-debug.css
-              |-- hello-debug.js
-              |-- hello.css
-              |-- hello.js
+        `-- main
+              `-- 1.0.0
+                    |-- main-debug.css
+                    |-- main-debug.js
+                    |-- main.css
+                    `-- main.js
 </pre>
 
     <p>
-      其中 <code>hello.js</code> 中已经合并了 <code>spinning.js</code> 文件。详尽用法请参考：<a href="https://github.com/seajs/spm/wiki">spm Wiki</a>
+      其中 <code>main.js</code> 中已经合并了 <code>spinning.js</code> 文件。详尽用法请参考：<a href="https://github.com/seajs/spm/wiki" target="_blank">spm Wiki</a>
     </p>
 
     <p>
-      打包好后，将需要的文件，比如 <code>images</code> 和 <code>sea-modules</code> 同步到线上，然后修改
+      打包好后，将需要的文件，比如 <code>sea-modules</code> 同步到线上，然后修改
       <code>index.html</code> 中的引用路径：
     </p>
 
 <pre class="sh_html">
-&lt;link rel="stylesheet" href="http://yoursite.com/assets/sea-modules/hello-seajs/1.0.0/hello.css"&gt;
+&lt;link rel="stylesheet" href="http://yoursite.com/assets/sea-modules/hello-seajs/main/1.0.0/main.css"&gt;
 ...
 &lt;script src="http://yoursite.com/assets/sea-modules/seajs/1.3.0/sea.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   seajs.config({
     alias: {
-      'jquery': '1.7.2' // 指定使用的 jQuery 版本
+      'jquery': 'gallery/jquery/1.8.2/jquery' // 指定使用的 jQuery 版本
     }
   })
 
   // 加载入口模块
-  seajs.use('hello-seajs/1.0.0/hello.js')
+  seajs.use('hello-seajs/main/1.0.0/main')
 &lt;/script&gt;
 </pre>
 
@@ -319,8 +326,20 @@ sea-modules/
     </p>
 
     <p>
-      <strong>注意</strong>：在实际项目中，一般不需要修改 <code>index.html</code> 中的引用。可以通过配置，自动适配环境。
+      <strong>注意</strong>：在实际项目中，不需要修改 <code>index.html</code> 中的引用。可以通过配置，自动适配环境。比如可以：
     </p>
+
+<pre>
+  // 加载入口模块
+  seajs.use(location.host === 'localhost' ? './assets/main/src/main' : 'hello-seajs/main/1.0.0/main')
+</pre>
+
+    <p>非静态页面时，一般通过变量来配置，比如 PHP 可以：</p>
+
+<pre>
+  // 加载入口模块
+  seajs.use('&lt;?=$MAIN_SRC?&gt;')
+</pre>
 
 
     <h3>结束语</h3>
@@ -335,7 +354,7 @@ sea-modules/
     </p>
 
     <p>
-      有任何问题，欢迎交流：<a href="https://github.com/seajs/seajs/issues/271">社区</a>
+      有任何问题，欢迎交流：<a href="https://github.com/seajs/seajs/issues/271" target="_blank">社区</a>
     </p>
 
   </div>
@@ -348,33 +367,30 @@ sea-modules/
 
       <p>
         这是 SeaJS 的官方文档。<br/>
-        基础教程推荐按顺序阅读，后续部分可根据兴趣选读。<br/>
+        基础教程推荐按顺序阅读，后续教程可根据兴趣选读。<br/>
         阅读过程中有任何疑问，欢迎到 <a href="https://github.com/seajs/seajs/issues/271" target="_blank">社区</a> 交流。
       </p>
 
       <h3>快速上手</h3>
       <ul>
-        <li><a href="https://github.com/seajs/seajs/issues/374">5 分钟上手 SeaJS</a></li>
+        <li><a href="#quick-start">5 分钟上手 SeaJS</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/266" target="_blank">API 快速参考</a></li>
       </ul>
 
-      <h3>基础教程</h3>
+      <h3>基本概念</h3>
 
       <ul>
         <li><a href="https://github.com/seajs/seajs/issues/240" target="_blank">模块系统</a></li>
-        <li><a href="https://github.com/seajs/seajs/issues/242" target="_blank">定义模块</a>
-          <ul>
-            <li><a href="https://github.com/seajs/seajs/issues/259" target="_blank">require 书写约定</a></li>
-            <li><a href="https://github.com/seajs/seajs/issues/258" target="_blank">require 的模块标识</a></li>
-          </ul>
-        </li>
+        <li><a href="https://github.com/seajs/seajs/issues/242" target="_blank">CMD 模块定义规范</a>
+        <li><a href="https://github.com/seajs/seajs/issues/258" target="_blank">模块标识</a></li>
+        <li><a href="https://github.com/seajs/seajs/issues/259" target="_blank">require 书写约定</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/260" target="_blank">在页面中加载模块</a></li>
         <li><a href="https://github.com/seajs/seajs/issues/262" target="_blank">配置</a></li>
-        <li><a href="https://github.com/seajs/spm/blob/master/README.md" target="_blank">打包部署</a></li>
+        <li><a href="https://github.com/seajs/spm/wiki" target="_blank">包管理工具</a></li>
       </ul>
 
 
-      <h3>进阶教程</h3>
+      <h3>进阶使用</h3>
 
       <ul>
         <li><a href="https://github.com/seajs/seajs/issues/267" target="_blank">常见错误</a></li>
@@ -409,7 +425,7 @@ sea-modules/
       </ul>
       
       
-      <p>更多文档请参见<a href="#articles">大家谈</a>。</p>
+      <p>更多文档请参见<a href="#articles">社区精选</a>。</p>
 
     </div>
   </div>
@@ -550,8 +566,8 @@ sea-modules/
     <div class="words">
 
       <p class="current">
-        <span class="date">即将发布</span>
-        seajs-1.3.0.zip
+        <span class="date">2012-11-13</span>
+        <a href="https://github.com/downloads/seajs/seajs/seajs-1.3.0.zip">seajs-1.3.0.zip</a>
         <a href="https://github.com/seajs/seajs/issues/225" target="_blank">发布说明</a>
       </p>
 
@@ -631,9 +647,9 @@ sea-modules/
 </div>
 
 <div id="extra">
-  <a href="https://github.com/seajs/seajs"><img style="position: absolute; top: -7px; right: 0; border: 0" src="assets/images/forkme.png" width="149" height="149" alt="Fork me on GitHub"></a>
+  <a href="https://github.com/seajs/seajs" target="_blank"><img style="position: absolute; top: -7px; right: 0; border: 0" src="assets/images/forkme.png" width="149" height="149" alt="Fork me on GitHub"></a>
 </div>
 
-<script src="../dist/sea.js" data-main="./assets/home.js?v20121016.js"></script>
+<script src="../dist/sea.js?v20121112.js" data-main="./assets/home.js?v20121112.js"></script>
 </body>
 </html>
